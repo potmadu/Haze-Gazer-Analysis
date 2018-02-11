@@ -78,6 +78,45 @@ def Recover(im,t,A,tx = 0.1):
 		res[:,:,ind] = (im[:,:,ind]-A[0,ind])/t + A[0,ind]
 	return res
 
+def Dehaze(im_path):
+	src = cv2.imread(im_path)
+	height = src.shape[0]
+	width = src.shape[1]
+	templateFile = 'DehazeFcnTemplate.prototxt'
+	EditFcnProto(templateFile, height, width)
+	I = src/255.0
+	dark = DarkChannel(I,15)
+	A = AtmLight(I,dark)
+	te = TransmissionEstimate(im_path, height, width)
+	t = TransmissionRefine(src,te)
+	J = Recover(I,t,A,0.1)
+	save_path = im_path[:-4]+'_Dehaze'+im_path[-4:len(im_path)]
+	cv2.imwrite(save_path,J*255)
+
+def getTe(im_path):
+	src = cv2.imread(im_path);
+        height = src.shape[0];
+        width = src.shape[1];
+        templateFile = 'DehazeFcnTemplate.prototxt';
+        EditFcnProto(templateFile, height, width);
+        I = src/255.0;
+        dark = DarkChannel(I,15);
+        A = AtmLight(I,dark);
+        te = TransmissionEstimate(im_path, height, width);
+	return te;
+
+def getT(im_path,te):
+	src = cv2.imread(im_path);
+	t = TransmissionRefine(src,te);
+	return t;
+
+def getA(im_path):
+	src = cv2.imread(im_path);
+	I = src/255.0;
+        dark = DarkChannel(I,15);
+        A = AtmLight(I,dark);
+	return A;
+
 if __name__ == '__main__':
 	if not len(sys.argv) == 2:
 		print 'Usage: python DeHazeNet.py haze_img_path'
@@ -95,10 +134,5 @@ if __name__ == '__main__':
 	te = TransmissionEstimate(im_path, height, width)
 	t = TransmissionRefine(src,te)
 	J = Recover(I,t,A,0.1)
-	cv2.imshow('TransmissionEstimate',te)
-	cv2.imshow('TransmissionRefine',t)
-	cv2.imshow('Origin',src)
-	cv2.imshow('Dehaze',J)
-	cv2.waitKey(0)
 	save_path = im_path[:-4]+'_Dehaze'+im_path[-4:len(im_path)]
 	cv2.imwrite(save_path,J*255)

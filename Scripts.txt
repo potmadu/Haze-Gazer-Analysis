@@ -1,2 +1,10 @@
 docker run -ti bvlc/caffe:done-dataset /bin/bash
 
+The cp command can be used to copy files. One specific file can be copied like:
+docker cp foo.txt mycontainer:/foo.txt
+docker cp mycontainer:/foo.txt foo.txt
+
+Multiple files contained by the folder src can be copied into the target folder using:
+docker cp src/. mycontainer:/target
+docker cp mycontainer:/src/. target
+
