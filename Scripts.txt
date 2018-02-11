@@ -8,3 +8,5 @@ Multiple files contained by the folder src can be copied into the target folder 
 docker cp src/. mycontainer:/target
 docker cp mycontainer:/src/. target
 
+docker ps
+docker commit {docker-ps-id} bvlc/caffe:new-version
