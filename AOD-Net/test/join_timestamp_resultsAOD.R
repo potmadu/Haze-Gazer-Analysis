@@ -14,5 +14,5 @@ as.data.frame();
 
 metadata_results$waktu = metadata$waktu;
 
-write.csv(metadata_results,"C:/Users/Fox/Documents/GitHub/Haze-Gazer-Analysis/AOD-Net/test/join_results.csv");
+write.csv(metadata_results,"C:/Users/Fox/Documents/GitHub/Haze-Gazer-Analysis/AOD-Net/test/join_results_aod.csv");
 
